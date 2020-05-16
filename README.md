@@ -1,2 +1,5 @@
 # camera_app
- Using camera and maps
+This is an Image uploading app.
+Main features are:
+Using Camera to take pictures and store them.
+Using Google Maps.
