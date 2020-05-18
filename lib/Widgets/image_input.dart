@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as syspaths;
 
 class ImageInput extends StatefulWidget {
   ImageInput({Key key}) : super(key: key);
@@ -11,13 +14,27 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   File _storedImage;
+  Future<void> _takeImage() async {
+    final imageFile = await ImagePicker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 600,
+    );
+    setState(() {
+      _storedImage = imageFile;
+    });
+    final appDir = await syspaths.getApplicationDocumentsDirectory();
+    final fileName = path.basename(imageFile.path);
+    final savedImage = await imageFile.copy('${appDir.path}/$fileName');
+    // print(savedImage.path);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         Container(
-          height: 150,
-          width: 100,
+          height: 100,
+          width: 150,
           decoration: BoxDecoration(
             border: Border.all(
               width: 1,
@@ -30,15 +47,21 @@ class _ImageInputState extends State<ImageInput> {
                   fit: BoxFit.cover,
                   width: double.infinity,
                 )
-              : Text('No image found'),
+              : Text(
+                  'No image found',
+                  textAlign: TextAlign.center,
+                ),
         ),
         SizedBox(
           height: 10,
         ),
         FlatButton.icon(
-          onPressed: () {},
+          onPressed: _takeImage,
           icon: Icon(Icons.camera),
-          label: Text('Take Picture',textAlign: TextAlign.center,),
+          label: Text(
+            'Take Picture',
+            textAlign: TextAlign.center,
+          ),
           textColor: Theme.of(context).primaryColor,
         )
       ],
