@@ -1,3 +1,6 @@
+import 'package:camera_app/Providers/great_places.dart';
+import 'package:provider/provider.dart';
+
 import './add_place_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +20,32 @@ class PlacesListScreen extends StatelessWidget {
               }),
         ],
       ),
-      body: Center(
-        child: CircularProgressIndicator(),
+      body: FutureBuilder(
+        future: Provider.of<GreaatPlaces>(context, listen: false)
+            .fetchAndSetPlaces(),
+        builder: (ctx, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Consumer<GreaatPlaces>(
+                child: Center(
+                  child: Text('No places'),
+                ),
+                builder: (ctx, greatPlaces, ch) => greatPlaces.items.length <= 0
+                    ? ch
+                    : ListView.builder(
+                        itemCount: greatPlaces.items.length,
+                        itemBuilder: (ctx, i) => ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage:
+                                FileImage(greatPlaces.items[i].image),
+                          ),
+                          title: Text(greatPlaces.items[i].title),
+                          onTap: () {},
+                        ),
+                      ),
+              ),
       ),
     );
   }
