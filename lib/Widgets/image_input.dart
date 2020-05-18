@@ -51,10 +51,11 @@ class _ImageInputState extends State<ImageInput> {
                   fit: BoxFit.cover,
                   width: double.infinity,
                 )
-              : Text(
-                  'No image found',
-                  textAlign: TextAlign.center,
-                ),
+              : Center(
+                child: Text(
+                    'No image found',
+                  ),
+              ),
         ),
         SizedBox(
           height: 10,

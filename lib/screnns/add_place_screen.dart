@@ -1,4 +1,5 @@
 import 'package:camera_app/Providers/great_places.dart';
+import 'package:camera_app/Widgets/location_input.dart';
 import 'package:provider/provider.dart';
 
 import '../Widgets/image_input.dart';
@@ -55,6 +56,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       height: 10,
                     ),
                     ImageInput(_selectImage),
+                    SizedBox(
+                      height: 10 ,
+                    ), 
+                    LocationInput(),
                   ],
                 ),
               ),
